@@ -35,19 +35,27 @@ def hsv_to_rgb(hsv):
 	else:
 		return (v, p, q)
 
+# Example Raspberry Pi configuration:
+lcd_rs = 27  # Change this to pin 21 on older revision Raspberry Pi's
+lcd_en = 22
+lcd_d4 = 25
+lcd_d5 = 24
+lcd_d6 = 23
+lcd_d7 = 18
+lcd_red   = 4
+lcd_green = 17
+lcd_blue  = 7  # Pin 7 is CE1
 
-# Define pins connected to the LCD.
-lcd_rs = 'P8_8'
-lcd_en = 'P8_10'
-lcd_d4 = 'P8_18'
-lcd_d5 = 'P8_16'
-lcd_d6 = 'P8_14'
-lcd_d7 = 'P8_12'
-
-# Define backlight color pins.
-lcd_red   = 'P9_16'
-lcd_green = 'P9_14'
-lcd_blue  = 'P8_13'
+# Example BeagleBone Black configuration:
+# lcd_rs = 'P8_8'
+# lcd_en = 'P8_10'
+# lcd_d4 = 'P8_18'
+# lcd_d5 = 'P8_16'
+# lcd_d6 = 'P8_14'
+# lcd_d7 = 'P8_12'
+# lcd_red   = 'P9_16'
+# lcd_green = 'P9_14'
+# lcd_blue  = 'P8_13'
 
 # Define LCD column and row size for 16x2 LCD.
 lcd_columns = 16

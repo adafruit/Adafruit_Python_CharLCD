@@ -21,6 +21,8 @@
 import time
 
 import Adafruit_GPIO as GPIO
+import Adafruit_GPIO.I2C as I2C
+import Adafruit_GPIO.MCP230xx as MCP
 import Adafruit_GPIO.PWM as PWM
 
 
@@ -65,6 +67,24 @@ LCD_5x8DOTS             = 0x00
 # Offset for up to 4 rows.
 LCD_ROW_OFFSETS         = (0x00, 0x40, 0x14, 0x54)
 
+# Char LCD plate GPIO numbers.
+LCD_PLATE_RS            = 15
+LCD_PLATE_RW            = 14
+LCD_PLATE_EN            = 13
+LCD_PLATE_D4            = 12
+LCD_PLATE_D5            = 11
+LCD_PLATE_D6            = 10
+LCD_PLATE_D7            = 9
+LCD_PLATE_RED           = 6
+LCD_PLATE_GREEN         = 7
+LCD_PLATE_BLUE          = 8
+
+# Char LCD plate button names.
+SELECT                  = 0
+RIGHT                   = 1
+DOWN                    = 2
+UP                      = 3
+LEFT                    = 4
 
 class Adafruit_CharLCD(object):
     """Class to represent and interact with an HD44780 character LCD display."""
@@ -353,9 +373,10 @@ class Adafruit_RGBCharLCD(Adafruit_CharLCD):
 
     def _rgb_to_pins(self, rgb):
         # Convert tuple of RGB 0-1 values to dict of pin values.
-        return { self._red:   self._blpol if red else not self._blpol,
-                 self._green: self._blpol if green else not self._blpol,
-                 self._blue:  self._blpol if blue else not self._blpol }
+        red, green, blue = rgb
+        return { red:   self._blpol if red else not self._blpol,
+                 green: self._blpol if green else not self._blpol,
+                 blue:  self._blpol if blue else not self._blpol }
 
     def set_color(self, red, green, blue):
         """Set backlight color to provided red, green, and blue values.  If PWM
@@ -382,3 +403,35 @@ class Adafruit_RGBCharLCD(Adafruit_CharLCD):
         function will set the backlight to all white.
         """
         self.set_color(backlight, backlight, backlight)
+
+
+class Adafruit_CharLCDPlate(Adafruit_RGBCharLCD):
+    """Class to represent and interact with an Adafruit Raspberry Pi character
+    LCD plate."""
+
+    def __init__(self, address=0x20, busnum=I2C.get_default_bus(), cols=16, lines=2):
+        """Initialize the character LCD plate.  Can optionally specify a separate
+        I2C address or bus number, but the defaults should suffice for most needs.
+        Can also optionally specify the number of columns and lines on the LCD
+        (default is 16x2).
+        """
+        # Configure MCP23017 device.
+        self._mcp = MCP.MCP23017(address=address, busnum=busnum)
+        # Set LCD R/W pin to low for writing only.
+        self._mcp.setup(LCD_PLATE_RW, GPIO.OUT)
+        self._mcp.output(LCD_PLATE_RW, GPIO.LOW)
+        # Set buttons as inputs with pull-ups enabled.
+        for button in (SELECT, RIGHT, DOWN, UP, LEFT):
+            self._mcp.setup(button, GPIO.IN)
+            self._mcp.pullup(button, True)
+        # Initialize LCD (with no PWM support).
+        super(Adafruit_CharLCDPlate, self).__init__(LCD_PLATE_RS, LCD_PLATE_EN,
+            LCD_PLATE_D4, LCD_PLATE_D5, LCD_PLATE_D6, LCD_PLATE_D7, cols, lines,
+            LCD_PLATE_RED, LCD_PLATE_GREEN, LCD_PLATE_BLUE, enable_pwm=False, 
+            gpio=self._mcp)
+
+    def is_pressed(self, button):
+        """Return True if the provided button is pressed, False otherwise."""
+        if button not in set((SELECT, RIGHT, DOWN, UP, LEFT)):
+            raise ValueError('Unknown button, must be SELECT, RIGHT, DOWN, UP, or LEFT.')
+        return self._mcp.input(button) == GPIO.LOW
