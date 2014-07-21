@@ -16,13 +16,13 @@ lcd_d7        = 18
 lcd_backlight = 4
 
 # BeagleBone Black configuration:
-# lcd_rs        = 'P9_8'
-# lcd_en        = 'P9_10'
-# lcd_d4        = 'P9_18'
-# lcd_d5        = 'P9_16'
-# lcd_d6        = 'P9_14'
-# lcd_d7        = 'P9_12'
-# lcd_backlight = 'P9_7'
+# lcd_rs        = 'P8_8'
+# lcd_en        = 'P8_10'
+# lcd_d4        = 'P8_18'
+# lcd_d5        = 'P8_16'
+# lcd_d6        = 'P8_14'
+# lcd_d7        = 'P8_12'
+# lcd_backlight = 'P8_7'
 
 # Define LCD column and row size for 16x2 LCD.
 lcd_columns = 16
