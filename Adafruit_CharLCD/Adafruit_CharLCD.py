@@ -374,9 +374,9 @@ class Adafruit_RGBCharLCD(Adafruit_CharLCD):
     def _rgb_to_pins(self, rgb):
         # Convert tuple of RGB 0-1 values to dict of pin values.
         red, green, blue = rgb
-        return { red:   self._blpol if red else not self._blpol,
-                 green: self._blpol if green else not self._blpol,
-                 blue:  self._blpol if blue else not self._blpol }
+        return { self._red:   self._blpol if red else not self._blpol,
+                 self._green: self._blpol if green else not self._blpol,
+                 self._blue:  self._blpol if blue else not self._blpol }
 
     def set_color(self, red, green, blue):
         """Set backlight color to provided red, green, and blue values.  If PWM
