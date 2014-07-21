@@ -121,6 +121,7 @@ while True:
 	# Set backlight color.
 	lcd.set_color(red, green, blue)
 	# Print message with RGB values to display.
+	lcd.set_cursor(0, 0)
 	lcd.message('RED  GREEN  BLUE\n{0:0.2f}  {1:0.2f}  {2:0.2f}'.format(red, green, blue))
 	# Increment hue (wrapping around at 360 degrees).
 	hue += 1.0
