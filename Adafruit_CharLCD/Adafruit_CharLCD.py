@@ -144,7 +144,7 @@ class Adafruit_CharLCD(object):
         # Setup backlight.
         if backlight is not None:
             if enable_pwm:
-                pwm.setup(backlight, self._pwm_duty_cycle(initial_backlight))
+                pwm.start(backlight, self._pwm_duty_cycle(initial_backlight))
             else:
                 gpio.setup(backlight, GPIO.OUT)
                 gpio.output(backlight, self._blpol if initial_backlight else not self._blpol)
