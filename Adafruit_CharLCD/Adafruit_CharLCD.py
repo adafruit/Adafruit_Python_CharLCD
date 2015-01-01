@@ -280,6 +280,18 @@ class Adafruit_CharLCD(object):
                                  self._d7: ((value >> 3) & 1) > 0 })
         self._pulse_enable()
 
+    def create_char(self, location, pattern):
+        """Fill one of the first 8 CGRAM locations with custom characters.
+        The location parameter should be between 0 and 7 and pattern should
+        provide an array of 8 bytes containing the pattern. E.g. you can easyly
+        design your custom character at http://www.quinapalus.com/hd44780udg.html
+        To show your custom character use eg. lcd.message('\x01')
+        """
+        # only position 0..7 are allowed
+        location &= 0x7
+        self.write8(LCD_SETCGRAMADDR | (location << 3))
+        for i in range(8):
+            self.write8(pattern[i], char_mode=True)
 
     def _delay_microseconds(self, microseconds):
         # Busy wait in loop because delays are generally very short (few microseconds).
@@ -403,20 +415,6 @@ class Adafruit_RGBCharLCD(Adafruit_CharLCD):
         function will set the backlight to all white.
         """
         self.set_color(backlight, backlight, backlight)
-
-    def create_char(self, location, pattern):
-        """Fill one of the first 8 CGRAM locations with custom characters.
-        The location parameter should be between 0 and 7 and pattern should
-        provide an array of 8 bytes containing the pattern. E.g. you can easyly
-        design your custom character at http://www.quinapalus.com/hd44780udg.html
-        To show your custom character use eg. lcd.message('\x01')
-        """
-        # only position 0..7 are allowed
-        location &= 0x7
-        self.write8(LCD_SETCGRAMADDR | (location << 3))
-        for i in range(8):
-            self.write8(pattern[i], char_mode=True)
-
 
 
 
