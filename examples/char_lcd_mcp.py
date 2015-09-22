@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # Example using an RGB character LCD connected to an MCP23017 GPIO extender.
-import math
 import time
 
 import Adafruit_CharLCD as LCD

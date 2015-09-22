@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # Example using a character LCD plate.
-import math
 import time
 
 import Adafruit_CharLCD as LCD
