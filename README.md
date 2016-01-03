@@ -21,7 +21,7 @@ sudo pip install RPi.GPIO
 For a BeagleBone Black make sure you have the Adafruit_BBIO library by executing:
 
 ````
-sudo pip instal Adafruit_BBIO
+sudo pip install Adafruit_BBIO
 ````
 
 Install the library by downloading with the download link on the right, unzipping the archive, navigating inside the library's directory and executing:
