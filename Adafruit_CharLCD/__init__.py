@@ -1,1 +1,1 @@
-from Adafruit_CharLCD import *
+from .Adafruit_CharLCD import *

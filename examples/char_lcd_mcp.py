@@ -31,9 +31,10 @@ gpio = MCP.MCP23017()
 # Alternatively you can initialize the MCP device on another I2C address or bus.
 # gpio = MCP.MCP23017(0x24, busnum=1)
 
-# Initialize the LCD using the pins 
-lcd = LCD.Adafruit_RGBCharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, 
-							lcd_columns, lcd_rows, lcd_red, lcd_green, lcd_blue, gpio=gpio)
+# Initialize the LCD using the pins
+lcd = LCD.Adafruit_RGBCharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
+                              lcd_columns, lcd_rows, lcd_red, lcd_green, lcd_blue,
+                              gpio=gpio)
 
 # Print a two line message
 lcd.message('Hello\nworld!')
@@ -64,11 +65,11 @@ lcd.clear()
 message = 'Scroll'
 lcd.message(message)
 for i in range(lcd_columns-len(message)):
-	time.sleep(0.5)
-	lcd.move_right()
+    time.sleep(0.5)
+    lcd.move_right()
 for i in range(lcd_columns-len(message)):
-	time.sleep(0.5)
-	lcd.move_left()
+    time.sleep(0.5)
+    lcd.move_left()
 
 # Demo turning backlight off and on.
 lcd.clear()
