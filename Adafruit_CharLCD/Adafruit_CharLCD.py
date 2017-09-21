@@ -86,6 +86,15 @@ DOWN                    = 2
 UP                      = 3
 LEFT                    = 4
 
+# Char LCD backpack GPIO numbers.
+LCD_BACKPACK_RS         = 1
+LCD_BACKPACK_EN         = 2
+LCD_BACKPACK_D4         = 3
+LCD_BACKPACK_D5         = 4
+LCD_BACKPACK_D6         = 5
+LCD_BACKPACK_D7         = 6
+LCD_BACKPACK_LITE       = 7
+
 class Adafruit_CharLCD(object):
     """Class to represent and interact with an HD44780 character LCD display."""
 
@@ -448,3 +457,21 @@ class Adafruit_CharLCDPlate(Adafruit_RGBCharLCD):
         if button not in set((SELECT, RIGHT, DOWN, UP, LEFT)):
             raise ValueError('Unknown button, must be SELECT, RIGHT, DOWN, UP, or LEFT.')
         return self._mcp.input(button) == GPIO.LOW
+    
+
+class Adafruit_CharLCDBackpack(Adafruit_CharLCD):
+    """Class to represent and interact with an Adafruit I2C / SPI
+    LCD backpack using I2C."""
+    
+    def __init__(self, address=0x20, busnum=I2C.get_default_bus(), cols=16, lines=2):
+        """Initialize the character LCD plate.  Can optionally specify a separate
+        I2C address or bus number, but the defaults should suffice for most needs.
+        Can also optionally specify the number of columns and lines on the LCD
+        (default is 16x2).
+        """
+        # Configure the MCP23008 device.
+        self._mcp = MCP.MCP23008(address=address, busnum=busnum)
+        # Initialize LCD (with no PWM support).
+        super(Adafruit_CharLCDBackpack, self).__init__(LCD_BACKPACK_RS, LCD_BACKPACK_EN,
+            LCD_BACKPACK_D4, LCD_BACKPACK_D5, LCD_BACKPACK_D6, LCD_BACKPACK_D7,
+            cols, lines, LCD_BACKPACK_LITE, enable_pwm=False, gpio=self._mcp)
