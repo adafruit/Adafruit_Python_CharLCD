@@ -1,4 +1,4 @@
-DEPRECATED LIBRARY. NO LONGER SUPPORTED. USAGE NOT RECOMMENDED.
+DEPRECATED LIBRARY. Adafruit Python CharLCD
 =======================
 
 This library has been deprecated! We are leaving this up for historical and research purposes but archiving the repository.
